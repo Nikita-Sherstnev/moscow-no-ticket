@@ -75,8 +75,6 @@ export default defineComponent({
       };
     });
 
-    console.log(box.value);
-
     const coords = computed<Coords>(() => {
       const yFactor = box.value.y > 215 ? 1 : -1;
 
@@ -86,8 +84,6 @@ export default defineComponent({
         scale: `${400 / (box.value.w * 2)}`,
       };
     });
-
-    console.log(coords.value);
 
     return {
       box,
@@ -114,14 +110,23 @@ export default defineComponent({
   left: calc(50% - 150px);
   width: 300px;
   height: auto;
-  background: rgba(#fff, 0.25);
-  border-radius: 30px;
-  border: 3px solid rgba(#000, 0.2);
 }
 
 .date {
   text-shadow: 1px 2px 0 #000;
   font-size: 32px;
+  border-radius: 0 0 30px 30px;
+  border: 3px solid #ff9f04;
+  width: 65%;
+  margin: 0 auto;
+  background: rgba(#000, 0.35);
+  border-top: none;
+}
+
+.stars {
+  border-radius: 25px;
+  border: 3px solid #ff9f04;
+  background: rgba(#fff, 0.65);
 }
 
 .container-avatar {

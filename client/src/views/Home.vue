@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <div class="cards-container">
+    <div v-if="loading" class="loading">Загрузка данных ...</div>
+
+    <div v-if="!loading" class="cards-container">
       <card
         v-for="(card, index) in cards"
         :key="card.id"
@@ -16,7 +18,7 @@
         }"
       />
     </div>
-    <div class="text">
+    <div v-if="!loading" class="text">
       <div class="line">Их разыскивает Дед Мазай!!!</div>
       <div class="line">Их разыскивает Дед Мазай!!!</div>
     </div>
@@ -40,15 +42,23 @@ export default defineComponent({
     const cards = ref([]);
 
     const source = ref("");
+    const loading = ref(true);
 
     const getData = () => {
       axios.get("http://127.0.0.1:5000/detect").then((resp) => {
         cards.value = resp.data.data.clients;
         source.value = resp.data.data.source_image_base_64;
       });
+
+      setTimeout(() => {
+        getData();
+      }, 10000);
     };
 
-    getData();
+    setTimeout(() => {
+      getData();
+      loading.value = false;
+    }, 2000);
 
     const current = ref(0);
     const prev = computed(() => {
@@ -79,12 +89,29 @@ export default defineComponent({
       next,
       source,
       getDate,
+      loading,
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+.loading {
+  font-size: 80px;
+  box-sizing: border-box;
+  color: #fff;
+  height: 200px;
+  width: 100%;
+  line-height: 200px;
+  overflow: hidden;
+  font-weight: bolder;
+  user-select: none;
+  font-family: Roboto, serif;
+  text-shadow: 1px 1px 0 #000;
+  text-align: center;
+  margin-top: 550px;
+}
+
 .card--default {
   opacity: 1;
   position: absolute;
