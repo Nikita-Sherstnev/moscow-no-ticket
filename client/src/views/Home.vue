@@ -4,8 +4,10 @@
       <card
         v-for="(card, index) in cards"
         :key="card.id"
-        :source="card.source"
-        :rect="card.rect"
+        :source="source"
+        :rect="card.coords"
+        :date="getDate(card.datetime)"
+        :rating="Math.floor(card.rating)"
         :class="{
           'card--default': true,
           next: index === next,
@@ -40,31 +42,46 @@
 import { computed, defineComponent, ref } from "vue";
 import Card from "../components/Card.vue";
 import { useIntervalFn } from "@vueuse/core";
+import { useAxios } from "@vueuse/integrations";
+import axios from "axios";
+import moment from "moment";
 
 export default defineComponent({
   name: "Home",
   components: {
     Card,
   },
-  setup() {
+  setup(props) {
     // "https://i.imgur.com/4eJioYc.png",
+
     const cards = ref([
-      {
-        id: 1,
-        source: "https://i.imgur.com/faOzV6y.jpg",
-        rect: [904, 175, 939, 224],
-      },
-      {
-        id: 2,
-        source: "https://i.imgur.com/faOzV6y.jpg",
-        rect: [445.14645, 173.83963, 479.26056, 221.26477],
-      },
-      {
-        id: 3,
-        source: "https://i.imgur.com/faOzV6y.jpg",
-        rect: [871.2262, 65.61149, 895.45276, 91.72891],
-      },
+      // {
+      //   id: 1,
+      //   source: "https://i.imgur.com/faOzV6y.jpg",
+      //   rect: [904, 175, 939, 224],
+      // },
+      // {
+      //   id: 2,
+      //   source: "https://i.imgur.com/faOzV6y.jpg",
+      //   rect: [445.14645, 173.83963, 479.26056, 221.26477],
+      // },
+      // {
+      //   id: 3,
+      //   source: "https://i.imgur.com/faOzV6y.jpg",
+      //   rect: [871.2262, 65.61149, 895.45276, 91.72891],
+      // },
     ]);
+
+    const source = ref("");
+
+    const getData = () => {
+      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+        cards.value = resp.data.data.clients;
+        source.value = resp.data.data.source_image_base_64;
+      });
+    };
+
+    getData();
 
     const current = ref(0);
     const prev = computed(() => {
@@ -77,11 +94,17 @@ export default defineComponent({
       return current.value + 1;
     });
 
+    const getDate = (datetime: string) => {
+      console.log(datetime);
+      return moment(datetime, "MM/DD/YYYY, h:mm a").format("DD.MM.YYYY");
+    };
+
     setInterval(() => {
       current.value++;
       if (current.value === cards.value.length) {
         current.value = 0;
       }
+      console.log(current.value);
     }, 4000);
 
     return {
@@ -89,6 +112,8 @@ export default defineComponent({
       current,
       prev,
       next,
+      source,
+      getDate,
     };
   },
 });
@@ -96,26 +121,30 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .card--default {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   transition: 250ms;
+  left: -50%;
+  transform: scale(0);
+  top: 50%;
 
   &.current {
     opacity: 1;
-    left: calc(50% - 300px);
-    transform: scale(1);
+    left: calc(75% - 300px);
+    transform: scale(1.2);
   }
 
   &.next {
     opacity: 1;
-    left: 150%;
+    left: calc(50% - 300px);
+    top: -50%;
     transform: scale(0);
   }
 
   &.prev {
     opacity: 1;
-    left: -150%;
-    transform: scale(0);
+    left: calc(25% - 300px);
+    transform: scale(1.2);
   }
 }
 
@@ -141,7 +170,7 @@ export default defineComponent({
   bottom: 0;
   box-sizing: border-box;
   color: #fff;
-  font-size: 71px;
+  font-size: 100px;
   height: 200px;
   width: 100%;
   line-height: 200px;
@@ -158,11 +187,12 @@ export default defineComponent({
     right: -100%;
     top: 0;
     position: absolute;
-    animation: RunningLine infinite 10s linear;
+    animation: RunningLine infinite 12s linear;
+    text-transform: uppercase;
   }
 
   .line:last-child {
-    animation: RunningLine infinite 10s 5s linear;
+    animation: RunningLine infinite 12s 6s linear;
   }
 }
 
@@ -171,7 +201,7 @@ export default defineComponent({
     left: 100%;
   }
   to {
-    left: -50%;
+    left: -100%;
   }
 }
 </style>
