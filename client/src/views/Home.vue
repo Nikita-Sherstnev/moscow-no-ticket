@@ -28,10 +28,9 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import Card from "../components/Card.vue";
-import { useIntervalFn } from "@vueuse/core";
-import { useAxios } from "@vueuse/integrations";
 import axios from "axios";
 import moment from "moment";
+import config from "../config/api";
 
 export default defineComponent({
   name: "Home",
@@ -45,7 +44,7 @@ export default defineComponent({
     const loading = ref(true);
 
     const getData = () => {
-      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+      axios.get(config.detect).then((resp) => {
         cards.value = resp.data.data.clients;
         source.value = resp.data.data.source_image_base_64;
       });

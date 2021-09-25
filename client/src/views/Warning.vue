@@ -25,6 +25,7 @@ import { computed, defineComponent, ref } from "vue";
 import axios from "axios";
 import moment from "moment";
 import WarningCard from "@/components/WarningCard.vue";
+import config from "@/config/api";
 
 export default defineComponent({
   name: "Warning",
@@ -35,7 +36,7 @@ export default defineComponent({
     const source = ref("");
 
     const getData = () => {
-      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+      axios.get(config.detect).then((resp) => {
         cards.value = resp.data.data.clients.filter(
           (client: any) => Math.floor(client.rating) === 1
         );

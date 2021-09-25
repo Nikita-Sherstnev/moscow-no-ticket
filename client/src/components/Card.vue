@@ -80,7 +80,9 @@ export default defineComponent({
 
       return {
         top: `-${box.value.x - 45 + box.value.h / 2}px`,
-        left: `${(Math.abs(box.value.y - 215) + (box.value.w / 2 * yFactor)) * -yFactor}px`,
+        left: `${
+          (Math.abs(box.value.y - 215) + (box.value.w / 2) * yFactor) * -yFactor
+        }px`,
         scale: `${400 / (box.value.w * 2)}`,
       };
     });

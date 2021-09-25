@@ -16,6 +16,7 @@ import { computed, defineComponent, ref } from "vue";
 import Card from "@/components/Card.vue";
 import axios from "axios";
 import moment from "moment";
+import config from "@/config/api";
 
 export default defineComponent({
   name: "Debug",
@@ -28,7 +29,7 @@ export default defineComponent({
     const source = ref("");
 
     const getData = () => {
-      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+      axios.get(config.detect).then((resp) => {
         cards.value = resp.data.data.clients.filter(
           (client: any) => client.id === 0
         );
