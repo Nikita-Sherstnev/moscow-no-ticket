@@ -48,10 +48,10 @@ class FaceDetection(base.ApiResource):
         with open("screen.jpg", "rb") as image_file:
             encoded_string = base64.b64encode(image_file.read())
 
-        clients = dict()
+        clients = list()
 
         for idx, coord in enumerate(coords):
-            clients[idx] = {'coords': coord.tolist(), 'datetime': random_date("1/1/2018 1:30 PM", "1/1/2022 4:50 AM", random.random()), 'rating': random.uniform(1, 5)}
+            clients.append({'id': idx, 'coords': coord.tolist(), 'datetime': random_date("1/1/2018 1:30 PM", "1/1/2022 4:50 AM", random.random()), 'rating': random.uniform(1, 5)}
 
         return {'clients': clients, 'source_image_base_64': encoded_string.decode('utf-8')}
 
