@@ -11,13 +11,13 @@
       <div class="date">01.09.21</div>
     </div>
     <div class="container-avatar">
-      <img src="../assets/rabbit_1.png" class="rabbit" />
+      <img src="../assets/rabbit_2.png" class="rabbit" />
 
       <div class="face-wrapper">
         <div class="face-zoom" :style="{ transform: `scale(${coords.scale})` }">
           }
           <img
-            :src="source"
+            :src="`data:image/png;base64, ${source}`"
             class="face"
             :style="{
               top: coords.top,
@@ -77,7 +77,7 @@ export default defineComponent({
     const coords = computed<Coords>(() => {
       return {
         top: `-${box.value.x - 75 + box.value.h / 2}px`,
-        left: `-${box.value.y - 125 + box.value.w / 2}px`,
+        left: `-${box.value.y - 200 + box.value.w / 2}px`,
         scale: `${250 / (box.value.w * 2)}`, //${250 / box.value.w}
       };
     });
@@ -138,16 +138,16 @@ export default defineComponent({
 .face-wrapper {
   clip-path: circle(50% at 50% 50%);
   position: absolute;
-  top: 150px;
-  left: 170px;
-  width: 250px;
+  top: 300px;
+  left: 90px;
+  width: 400px;
   height: 150px;
   z-index: 1;
 }
 
 .face-zoom {
   clip-path: circle(50% at 50% 50%);
-  width: 250px;
+  width: 400px;
   height: 150px;
 }
 
