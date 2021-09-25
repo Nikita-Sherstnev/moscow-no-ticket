@@ -37,6 +37,12 @@ html, body, #app {
   background: whitesmoke;
   border-radius: 30px;
   box-shadow: 0 3px 0 0 rgba(#000, .15);
+  opacity: 0;
+  transition: 250ms;
+
+  &:hover {
+    opacity: 1;
+  }
 
   a {
     margin: 5px 10px;

@@ -95,7 +95,6 @@ export default defineComponent({
     });
 
     const getDate = (datetime: string) => {
-      console.log(datetime);
       return moment(datetime, "MM/DD/YYYY, h:mm a").format("DD.MM.YYYY");
     };
 
@@ -104,7 +103,6 @@ export default defineComponent({
       if (current.value === cards.value.length) {
         current.value = 0;
       }
-      console.log(current.value);
     }, 4000);
 
     return {
@@ -123,27 +121,27 @@ export default defineComponent({
 .card--default {
   opacity: 1;
   position: absolute;
-  transition: 250ms;
+  transition: 500ms;
   left: -50%;
   transform: scale(0);
   top: 50%;
 
   &.current {
     opacity: 1;
-    left: calc(75% - 300px);
+    left: calc(75% - 350px);
     transform: scale(1.2);
   }
 
   &.next {
     opacity: 1;
-    left: calc(50% - 300px);
+    left: calc(50% - 350px);
     top: -50%;
     transform: scale(0);
   }
 
   &.prev {
     opacity: 1;
-    left: calc(25% - 300px);
+    left: calc(25% - 350px);
     transform: scale(1.2);
   }
 }

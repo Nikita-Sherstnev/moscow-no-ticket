@@ -1,17 +1,8 @@
 <template>
   <div class="container">
-    <div class="status-bar">
-      <div class="stars">
-        <star v-for="i in rating" :key="i" />
-      </div>
-      <div class="date">{{ date }}</div>
-    </div>
     <div class="container-avatar">
-      <img src="../assets/rabbit_3.png" class="rabbit" />
-
       <div class="face-wrapper">
         <div class="face-zoom" :style="{ transform: `scale(${coords.scale})` }">
-          }
           <img
             :src="`data:image/png;base64, ${source}`"
             class="face"
@@ -29,8 +20,6 @@
 
 <script lang="ts">
 import { computed, defineComponent, PropType } from "vue";
-import { Box } from "@/types";
-import Star from "@/components/Star.vue";
 
 type CustomBox = {
   x: number;
@@ -46,8 +35,7 @@ type Coords = {
 };
 
 export default defineComponent({
-  name: "Card",
-  components: { Star },
+  name: "WarningCard",
   props: {
     source: {
       type: String,
@@ -55,14 +43,6 @@ export default defineComponent({
     },
     rect: {
       type: Object as PropType<number[]>,
-      required: true,
-    },
-    date: {
-      type: String,
-      required: true,
-    },
-    rating: {
-      type: Number,
       required: true,
     },
   },
@@ -76,10 +56,11 @@ export default defineComponent({
       };
     });
 
+
     const coords = computed<Coords>(() => {
       return {
-        top: `-${box.value.x - 45 + box.value.h / 2}px`,
-        left: `-${box.value.y - 215 + box.value.w / 2}px`,
+        top: `-${box.value.x - 150 + box.value.h / 2}px`,
+        left: `-${box.value.y - 150 + box.value.w / 2}px`,
         scale: `${400 / (box.value.w * 2)}`, //${250 / box.value.w}
       };
     });
@@ -94,67 +75,46 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .container {
-  width: 700px;
-  height: auto;
+  width: 300px;
+  height: 300px;
   box-sizing: border-box;
   color: white;
   user-select: none;
   position: relative;
-}
-
-.status-bar {
-  position: absolute;
-  z-index: 1000;
-  top: 0;
-  left: calc(50% - 150px);
-  width: 300px;
-  height: auto;
-  background: rgba(#fff, 0.25);
-  border-radius: 30px;
-  border: 3px solid rgba(#000, 0.2)
-}
-
-.date {
-  text-shadow: 1px 2px 0 #000;
-  font-size: 32px;
+  overflow: hidden;
 }
 
 .container-avatar {
-  width: 100%;
-  height: auto;
+  width: 300px;
+  height: 300px;
   border-radius: 50%;
   box-sizing: border-box;
   position: relative;
-  background: transparent; //#f5f5f5;
-}
-
-.rabbit {
-  position: absolute;
-  top: -280px;
-  left: calc(50% - 350px);
-  height: auto;
-  width: 100%;
-  z-index: 100;
+  background: transparent;
+  border: 11px dashed #e58511;
+  overflow: hidden;
 }
 
 .face-wrapper {
   clip-path: circle(50% at 50% 50%);
   position: absolute;
-  top: 280px;
-  left: 105px;
-  width: 480px;
-  height: 90px;
+  top: -5px;
+  left: 0;
+  width: 300px;
+  height: 300px;
   z-index: 1;
+  box-sizing: border-box;
 }
 
 .face-zoom {
-  clip-path: circle(50% at 50% 50%);
-  width: 400px;
-  height: 90px;
+  width: 300px;
+  height: 300px;
 }
 
 .face {
   position: absolute;
+  top: 0;
+  left: 0;
   z-index: 1;
 }
 </style>
