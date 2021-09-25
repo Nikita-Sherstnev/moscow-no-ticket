@@ -25,14 +25,14 @@
 <h4>Демо</h4>
 <p>Демо сервиса доступно по адресу: TODO </p>
 
-
+ 
 Среда запуска
 ------------
 1) развертывание сервиса производится на debian-like linux (debian 9+);
 
 Установка и запуск
 ------------
-Сервер
+ Сервер
 ------
 Выполните:
 
@@ -50,6 +50,33 @@ python -m app
 ```
 
 /detect (GET) - endpoint на распознавание изображения
+
+***
+
+ Клиент
+------
+
+### Среда запуска
+
+- NodeJS, NPM 14.17.0+ 
+- Yarn 1.22.5+
+
+### Установка
+```
+git clone https://github.com/Nikita-Sherstnev/moscow-no-ticket.git
+cd moscow-no-ticket/client
+yarn install
+```
+
+### Компиляция
+```
+yarn serve
+```
+
+### Сборка
+```
+yarn build
+```
 
 РАЗРАБОТЧИКИ
 
