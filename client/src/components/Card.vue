@@ -11,7 +11,6 @@
 
       <div class="face-wrapper">
         <div class="face-zoom" :style="{ transform: `scale(${coords.scale})` }">
-          }
           <img
             :src="`data:image/png;base64, ${source}`"
             class="face"
@@ -76,13 +75,19 @@ export default defineComponent({
       };
     });
 
+    console.log(box.value);
+
     const coords = computed<Coords>(() => {
+      const yFactor = box.value.y > 215 ? 1 : -1;
+
       return {
         top: `-${box.value.x - 45 + box.value.h / 2}px`,
-        left: `-${box.value.y - 215 + box.value.w / 2}px`,
-        scale: `${400 / (box.value.w * 2)}`, //${250 / box.value.w}
+        left: `${(Math.abs(box.value.y - 215) + (box.value.w / 2 * yFactor)) * -yFactor}px`,
+        scale: `${400 / (box.value.w * 2)}`,
       };
     });
+
+    console.log(coords.value);
 
     return {
       box,
@@ -111,7 +116,7 @@ export default defineComponent({
   height: auto;
   background: rgba(#fff, 0.25);
   border-radius: 30px;
-  border: 3px solid rgba(#000, 0.2)
+  border: 3px solid rgba(#000, 0.2);
 }
 
 .date {

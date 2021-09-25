@@ -2,6 +2,7 @@ import { createRouter, createWebHistory, RouteRecordRaw } from "vue-router";
 import Home from "../views/Home.vue";
 import Schema from "../views/Schema.vue";
 import Warning from "@/views/Warning.vue";
+import Debug from "@/views/Debug.vue";
 
 const routes: Array<RouteRecordRaw> = [
   {
@@ -18,6 +19,11 @@ const routes: Array<RouteRecordRaw> = [
     path: "/warning",
     name: "Warning",
     component: Warning,
+  },
+  {
+    path: "/debug",
+    name: "Debug",
+    component: Debug,
   },
 ];
 

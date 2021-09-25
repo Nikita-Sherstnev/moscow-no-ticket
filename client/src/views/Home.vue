@@ -15,21 +15,6 @@
           prev: index === prev,
         }"
       />
-      <!--      <card-->
-      <!--        :key="cards[prev].id"-->
-      <!--        :source="cards[prev].source"-->
-      <!--        :rect="cards[prev].rect"-->
-      <!--      />-->
-      <!--      <card-->
-      <!--        :key="cards[current].id"-->
-      <!--        :source="cards[current].source"-->
-      <!--        :rect="cards[current].rect"-->
-      <!--      />-->
-      <!--      <card-->
-      <!--        :key="cards[next].id"-->
-      <!--        :source="cards[next].source"-->
-      <!--        :rect="cards[next].rect"-->
-      <!--      />-->
     </div>
     <div class="text">
       <div class="line">Их разыскивает Дед Мазай!!!</div>
@@ -51,26 +36,8 @@ export default defineComponent({
   components: {
     Card,
   },
-  setup(props) {
-    // "https://i.imgur.com/4eJioYc.png",
-
-    const cards = ref([
-      // {
-      //   id: 1,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [904, 175, 939, 224],
-      // },
-      // {
-      //   id: 2,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [445.14645, 173.83963, 479.26056, 221.26477],
-      // },
-      // {
-      //   id: 3,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [871.2262, 65.61149, 895.45276, 91.72891],
-      // },
-    ]);
+  setup() {
+    const cards = ref([]);
 
     const source = ref("");
 
