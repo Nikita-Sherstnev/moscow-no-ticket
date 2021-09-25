@@ -1,25 +1,53 @@
 <template>
   <div class="container">
+    <div class="status-bar">
+      <div class="stars">
+        <star />
+        <star />
+        <star />
+        <star />
+        <star />
+      </div>
+      <div class="date">01.09.21</div>
+    </div>
     <div class="container-avatar">
       <img src="../assets/rabbit_1.png" class="rabbit" />
 
-      <!--      <img src="../assets/face.png" class="face" />-->
-      <img :src="source" class="face" />
-    </div>
-    <div class="date">Дата</div>
-    <div class="stars">
-      <star />
-      <star />
-      <star />
-      <star />
+      <div class="face-wrapper">
+        <div class="face-zoom" :style="{ transform: `scale(${coords.scale})` }">
+          }
+          <img
+            :src="source"
+            class="face"
+            :style="{
+              top: coords.top,
+              left: coords.left,
+            }"
+            alt="Face"
+          />
+        </div>
+      </div>
     </div>
   </div>
 </template>
 
 <script lang="ts">
-import { defineComponent, PropType } from "vue";
+import { computed, defineComponent, PropType } from "vue";
 import { Box } from "@/types";
 import Star from "@/components/Star.vue";
+
+type CustomBox = {
+  x: number;
+  y: number;
+  w: number;
+  h: number;
+};
+
+type Coords = {
+  top: string;
+  left: string;
+  scale: string;
+};
 
 export default defineComponent({
   name: "Card",
@@ -29,26 +57,69 @@ export default defineComponent({
       type: String,
       required: true,
     },
-    box: {
-      type: Object as PropType<Box>,
+    rect: {
+      type: Object as PropType<number[]>,
       required: true,
     },
+  },
+  setup(props) {
+    const box = computed<CustomBox>(() => {
+      return {
+        y: props.rect[0],
+        x: props.rect[1],
+        h: props.rect[2] - props.rect[0],
+        w: props.rect[3] - props.rect[1],
+      };
+    });
+
+    console.log((box.value, box.value.w / 2));
+
+    const coords = computed<Coords>(() => {
+      return {
+        top: `-${box.value.x - 75 + box.value.h / 2}px`,
+        left: `-${box.value.y - 125 + box.value.w / 2}px`,
+        scale: `${250 / (box.value.w * 2)}`, //${250 / box.value.w}
+      };
+    });
+
+    return {
+      box,
+      coords,
+    };
   },
 });
 </script>
 
 <style scoped lang="scss">
 .container {
-  width: 450px;
+  width: 600px;
   height: auto;
   box-sizing: border-box;
   color: white;
   user-select: none;
+  position: relative;
+}
+
+.status-bar {
+  position: absolute;
+  z-index: 1000;
+  top: 0;
+  left: calc(50% - 150px);
+  width: 300px;
+  height: auto;
+  background: rgba(#fff, 0.25);
+  border-radius: 30px;
+  border: 3px solid rgba(#000, 0.2)
+}
+
+.date {
+  text-shadow: 1px 2px 0 #000;
+  font-size: 32px;
 }
 
 .container-avatar {
-  width: 450px;
-  height: 450px;
+  width: 600px;
+  height: 600px;
   border-radius: 50%;
   box-sizing: border-box;
   position: relative;
@@ -57,19 +128,31 @@ export default defineComponent({
 
 .rabbit {
   position: absolute;
-  top: 0;
-  left: calc(50% - 130px);
-  height: 100%;
-  width: auto;
+  top: -320px;
+  left: calc(50% - 300px);
+  height: auto;
+  width: 100%;
   z-index: 100;
+}
+
+.face-wrapper {
+  clip-path: circle(50% at 50% 50%);
+  position: absolute;
+  top: 150px;
+  left: 170px;
+  width: 250px;
+  height: 150px;
+  z-index: 1;
+}
+
+.face-zoom {
+  clip-path: circle(50% at 50% 50%);
+  width: 250px;
+  height: 150px;
 }
 
 .face {
   position: absolute;
-  top: 210px;
-  left: 180px;
-  width: 80px;
-  height: 80px;
   z-index: 1;
 }
 </style>
