@@ -1,27 +1,33 @@
 <template>
   <div class="home">
     <div class="cards-container">
+      <card
+        v-for="(card, index) in cards"
+        :key="card.id"
+        :source="card.source"
+        :rect="card.rect"
+        :class="{
+          'card--default': true,
+          next: index === next,
+          current: index === current,
+          prev: index === prev,
+        }"
+      />
       <!--      <card-->
-      <!--        v-for="card in cards"-->
-      <!--        :key="card.id"-->
-      <!--        :source="card.source"-->
-      <!--        :rect="card.rect"-->
+      <!--        :key="cards[prev].id"-->
+      <!--        :source="cards[prev].source"-->
+      <!--        :rect="cards[prev].rect"-->
       <!--      />-->
-      <card
-        :key="cards[prev].id"
-        :source="cards[prev].source"
-        :rect="cards[prev].rect"
-      />
-      <card
-        :key="cards[current].id"
-        :source="cards[current].source"
-        :rect="cards[current].rect"
-      />
-      <card
-        :key="cards[next].id"
-        :source="cards[next].source"
-        :rect="cards[next].rect"
-      />
+      <!--      <card-->
+      <!--        :key="cards[current].id"-->
+      <!--        :source="cards[current].source"-->
+      <!--        :rect="cards[current].rect"-->
+      <!--      />-->
+      <!--      <card-->
+      <!--        :key="cards[next].id"-->
+      <!--        :source="cards[next].source"-->
+      <!--        :rect="cards[next].rect"-->
+      <!--      />-->
     </div>
     <div class="text">
       <div class="line">Их разыскивает Дед Мазай!!!</div>
@@ -65,6 +71,7 @@ export default defineComponent({
       if (current.value === 0) return cards.value.length - 1;
       return current.value - 1;
     });
+
     const next = computed(() => {
       if (current.value === cards.value.length - 1) return 0;
       return current.value + 1;
@@ -75,7 +82,7 @@ export default defineComponent({
       if (current.value === cards.value.length) {
         current.value = 0;
       }
-    }, 1000);
+    }, 4000);
 
     return {
       cards,
@@ -88,6 +95,30 @@ export default defineComponent({
 </script>
 
 <style scoped lang="scss">
+.card--default {
+  opacity: 0;
+  position: absolute;
+  transition: 250ms;
+
+  &.current {
+    opacity: 1;
+    left: calc(50% - 300px);
+    transform: scale(1);
+  }
+
+  &.next {
+    opacity: 1;
+    left: 150%;
+    transform: scale(0);
+  }
+
+  &.prev {
+    opacity: 1;
+    left: -150%;
+    transform: scale(0);
+  }
+}
+
 .home {
   padding: 0;
   margin: 0;
@@ -101,9 +132,7 @@ export default defineComponent({
 
 .cards-container {
   padding-top: 300px;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  position: relative;
 }
 
 .text {
