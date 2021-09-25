@@ -2,13 +2,9 @@
   <div class="container">
     <div class="status-bar">
       <div class="stars">
-        <star />
-        <star />
-        <star />
-        <star />
-        <star />
+        <star v-for="i in rating" :key="i" />
       </div>
-      <div class="date">01.09.21</div>
+      <div class="date">{{ date }}</div>
     </div>
     <div class="container-avatar">
       <img src="../assets/rabbit_2.png" class="rabbit" />
@@ -59,6 +55,14 @@ export default defineComponent({
     },
     rect: {
       type: Object as PropType<number[]>,
+      required: true,
+    },
+    date: {
+      type: String,
+      required: true,
+    },
+    rating: {
+      type: Number,
       required: true,
     },
   },

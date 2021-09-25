@@ -6,6 +6,8 @@
         :key="card.id"
         :source="source"
         :rect="card.coords"
+        :date="getDate(card.datetime)"
+        :rating="Math.floor(card.rating)"
         :class="{
           'card--default': true,
           next: index === next,
@@ -42,13 +44,14 @@ import Card from "../components/Card.vue";
 import { useIntervalFn } from "@vueuse/core";
 import { useAxios } from "@vueuse/integrations";
 import axios from "axios";
+import moment from "moment";
 
 export default defineComponent({
   name: "Home",
   components: {
     Card,
   },
-  setup: function () {
+  setup(props) {
     // "https://i.imgur.com/4eJioYc.png",
 
     const cards = ref([
@@ -91,11 +94,17 @@ export default defineComponent({
       return current.value + 1;
     });
 
+    const getDate = (datetime: string) => {
+      console.log(datetime);
+      return moment(datetime, "MM/DD/YYYY, h:mm a").format("DD.MM.YYYY");
+    };
+
     setInterval(() => {
       current.value++;
       if (current.value === cards.value.length) {
         current.value = 0;
       }
+      console.log(current.value);
     }, 4000);
 
     return {
@@ -104,6 +113,7 @@ export default defineComponent({
       prev,
       next,
       source,
+      getDate,
     };
   },
 });
