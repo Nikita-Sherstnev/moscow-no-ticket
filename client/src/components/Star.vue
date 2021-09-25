@@ -15,6 +15,7 @@ export default defineComponent({
   height: 30px;
   width: 30px;
   color: #f9ca00;
-  font-size: 30px;
+  font-size: 42px;
+  text-shadow: 1px 2px 0 #000;
 }
 </style>
