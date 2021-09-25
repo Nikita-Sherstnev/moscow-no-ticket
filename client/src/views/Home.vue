@@ -40,14 +40,17 @@
 import { computed, defineComponent, ref } from "vue";
 import Card from "../components/Card.vue";
 import { useIntervalFn } from "@vueuse/core";
+import { useAxios } from "@vueuse/integrations";
+import axios from "axios";
 
 export default defineComponent({
   name: "Home",
   components: {
     Card,
   },
-  setup() {
+  setup: function () {
     // "https://i.imgur.com/4eJioYc.png",
+
     const cards = ref([
       {
         id: 1,
@@ -65,6 +68,16 @@ export default defineComponent({
         rect: [871.2262, 65.61149, 895.45276, 91.72891],
       },
     ]);
+
+    const source = ref("");
+
+    const getData = () => {
+      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+        console.log(resp.data.data);
+      });
+    };
+
+    getData();
 
     const current = ref(0);
     const prev = computed(() => {
@@ -89,6 +102,7 @@ export default defineComponent({
       current,
       prev,
       next,
+      source,
     };
   },
 });
@@ -96,26 +110,29 @@ export default defineComponent({
 
 <style scoped lang="scss">
 .card--default {
-  opacity: 0;
+  opacity: 1;
   position: absolute;
   transition: 250ms;
+  left: -50%;
+  transform: scale(0);
 
   &.current {
     opacity: 1;
-    left: calc(50% - 300px);
+    left: calc(75% - 300px);
     transform: scale(1);
   }
 
   &.next {
     opacity: 1;
-    left: 150%;
+    left: calc(50% - 300px);
+    top: -50%;
     transform: scale(0);
   }
 
   &.prev {
     opacity: 1;
-    left: -150%;
-    transform: scale(0);
+    left: calc(25% - 300px);
+    transform: scale(1);
   }
 }
 
