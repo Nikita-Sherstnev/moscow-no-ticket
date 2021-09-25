@@ -26,16 +26,18 @@
 <p>Демо сервиса доступно по адресу: TODO </p>
 
 
-СРЕДА ЗАПУСКА
+Среда запуска
 ------------
 1) развертывание сервиса производится на debian-like linux (debian 9+);
 
-## Инструкция по запуску сервера
-
-Находясь в папке с проектом выполняем следующие команды:
+Установка
+------------
+Выполните:
 
 ```bash
-cd server
+
+git clone https://github.com/Nikita-Sherstnev/moscow-no-ticket.git
+cd moscow-no-ticket
 python -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
