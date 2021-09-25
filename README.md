@@ -17,7 +17,7 @@
 	<li>SCSS.</li>
 	<li>Gulp, Webpack, Babel.</li>
 	<li>Vue.</li>
-	<li>Git, Mercurial.</li>
+	<li>Git.</li>
 	<li>Heroku.</li>
 
  </ul>
