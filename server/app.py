@@ -6,7 +6,7 @@ from flask_restful import Resource, Api
 from api import face_detect
 from flask_cors import CORS
 
-from server.api.face_detect import video_analyzer_thread
+from api.face_detect import video_analyzer_thread
 
 app = Flask(__name__)
 CORS(app)
