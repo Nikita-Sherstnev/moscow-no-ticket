@@ -1,6 +1,8 @@
 <template>
   <div class="home">
-    <div class="cards-container">
+    <div v-if="loading" class="loading">Загрузка данных ...</div>
+
+    <div v-if="!loading" class="cards-container">
       <card
         v-for="(card, index) in cards"
         :key="card.id"
@@ -15,23 +17,8 @@
           prev: index === prev,
         }"
       />
-      <!--      <card-->
-      <!--        :key="cards[prev].id"-->
-      <!--        :source="cards[prev].source"-->
-      <!--        :rect="cards[prev].rect"-->
-      <!--      />-->
-      <!--      <card-->
-      <!--        :key="cards[current].id"-->
-      <!--        :source="cards[current].source"-->
-      <!--        :rect="cards[current].rect"-->
-      <!--      />-->
-      <!--      <card-->
-      <!--        :key="cards[next].id"-->
-      <!--        :source="cards[next].source"-->
-      <!--        :rect="cards[next].rect"-->
-      <!--      />-->
     </div>
-    <div class="text">
+    <div v-if="!loading" class="text">
       <div class="line">Их разыскивает Дед Мазай!!!</div>
       <div class="line">Их разыскивает Дед Мазай!!!</div>
     </div>
@@ -41,47 +28,36 @@
 <script lang="ts">
 import { computed, defineComponent, ref } from "vue";
 import Card from "../components/Card.vue";
-import { useIntervalFn } from "@vueuse/core";
-import { useAxios } from "@vueuse/integrations";
 import axios from "axios";
 import moment from "moment";
+import config from "../config/api";
 
 export default defineComponent({
   name: "Home",
   components: {
     Card,
   },
-  setup(props) {
-    // "https://i.imgur.com/4eJioYc.png",
-
-    const cards = ref([
-      // {
-      //   id: 1,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [904, 175, 939, 224],
-      // },
-      // {
-      //   id: 2,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [445.14645, 173.83963, 479.26056, 221.26477],
-      // },
-      // {
-      //   id: 3,
-      //   source: "https://i.imgur.com/faOzV6y.jpg",
-      //   rect: [871.2262, 65.61149, 895.45276, 91.72891],
-      // },
-    ]);
+  setup() {
+    const cards = ref([]);
 
     const source = ref("");
+    const loading = ref(true);
 
     const getData = () => {
-      axios.get("http://127.0.0.1:5000/detect").then((resp) => {
+      axios.get(config.detect).then((resp) => {
         cards.value = resp.data.data.clients;
         source.value = resp.data.data.source_image_base_64;
       });
+
+      setTimeout(() => {
+        getData();
+      }, 10000);
     };
 
-    getData();
+    setTimeout(() => {
+      getData();
+      loading.value = false;
+    }, 2000);
 
     const current = ref(0);
     const prev = computed(() => {
@@ -95,7 +71,6 @@ export default defineComponent({
     });
 
     const getDate = (datetime: string) => {
-      console.log(datetime);
       return moment(datetime, "MM/DD/YYYY, h:mm a").format("DD.MM.YYYY");
     };
 
@@ -104,7 +79,6 @@ export default defineComponent({
       if (current.value === cards.value.length) {
         current.value = 0;
       }
-      console.log(current.value);
     }, 4000);
 
     return {
@@ -114,36 +88,53 @@ export default defineComponent({
       next,
       source,
       getDate,
+      loading,
     };
   },
 });
 </script>
 
 <style scoped lang="scss">
+.loading {
+  font-size: 80px;
+  box-sizing: border-box;
+  color: #fff;
+  height: 200px;
+  width: 100%;
+  line-height: 200px;
+  overflow: hidden;
+  font-weight: bolder;
+  user-select: none;
+  font-family: Roboto, serif;
+  text-shadow: 1px 1px 0 #000;
+  text-align: center;
+  margin-top: 550px;
+}
+
 .card--default {
   opacity: 1;
   position: absolute;
-  transition: 250ms;
+  transition: 500ms;
   left: -50%;
   transform: scale(0);
   top: 50%;
 
   &.current {
     opacity: 1;
-    left: calc(75% - 300px);
+    left: calc(75% - 350px);
     transform: scale(1.2);
   }
 
   &.next {
     opacity: 1;
-    left: calc(50% - 300px);
+    left: calc(50% - 350px);
     top: -50%;
     transform: scale(0);
   }
 
   &.prev {
     opacity: 1;
-    left: calc(25% - 300px);
+    left: calc(25% - 350px);
     transform: scale(1.2);
   }
 }
