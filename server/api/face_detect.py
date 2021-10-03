@@ -1,4 +1,5 @@
 import os
+import io
 import time
 import random
 from threading import Thread
@@ -207,11 +208,12 @@ class FaceDetection(base.ApiResource):
         device = torch.device('cuda:0' if torch.cuda.is_available() else 'cpu')
         mtcnn = MTCNN(keep_all=True, device=device)
 
-        with Image.open("screen.jpg") as frame:
-            coords = detect_faces_on_frame(frame, mtcnn)
-
         with open("screen.jpg", "rb") as image_file:
-            encoded_string = base64.b64encode(image_file.read())
+            img_bytes = image_file.read()
+            encoded_string = base64.b64encode(img_bytes)
+            frame = Image.open(io.BytesIO(img_bytes))
+
+        coords = detect_faces_on_frame(frame, mtcnn)
 
         clients = list()
 
